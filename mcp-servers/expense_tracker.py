@@ -17,8 +17,13 @@ print(f"[ExpenseTracker] Categories file at: {os.path.abspath(CATEGORIES_FILE)}"
 def get_db_connection():
     """Context manager for a database connection."""
     conn = sqlite3.connect(DB_FILE)
+    conn.execute("PRAGMA journal_mode=WAL")  # Enable Write-Ahead Logging for better concurrency
     try:
         yield conn
+        conn.commit()  # Commit changes before closing
+    except Exception:
+        conn.rollback()  # Rollback on error
+        raise
     finally:
         conn.close()
 
@@ -36,7 +41,7 @@ def init_db():
                 date TEXT NOT NULL
             )
         ''')
-        conn.commit()
+        # conn.commit() is now handled by the context manager
 
 # MCP tool: Add expense
 @mcp.tool
@@ -48,7 +53,7 @@ def add_expense(category: str, amount: float, notes: str, date: str, subcategory
             "INSERT INTO expenses (category, subcategory, amount, notes, date) VALUES (?, ?, ?, ?, ?)",
             (category, subcategory, amount, notes, date)
         )
-        conn.commit()
+        # conn.commit() is now handled by the context manager
     return {"status": "success", "message": "Expense added."}
 
 # MCP tool: List expenses
