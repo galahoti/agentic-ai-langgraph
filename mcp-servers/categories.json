@@ -1,0 +1,44 @@
+{
+  "categories": [
+    {
+      "name": "Travel",
+      "subcategories": ["Flights", "Hotels", "Car Rentals", "Tours", "Visa Fees", "Travel Insurance"]
+    },
+    {
+      "name": "Food",
+      "subcategories": ["Groceries", "Restaurants", "Fast Food", "Coffee & Snacks", "Delivery"]
+    },
+    {
+      "name": "Education",
+      "subcategories": ["Tuition", "Books", "Courses", "Supplies", "Online Learning"]
+    },
+    {
+      "name": "Healthcare",
+      "subcategories": ["Doctor Visits", "Medications", "Dental", "Vision", "Insurance", "Lab Tests"]
+    },
+    {
+      "name": "Entertainment",
+      "subcategories": ["Movies", "Concerts", "Streaming Services", "Gaming", "Sports Events", "Hobbies"]
+    },
+    {
+      "name": "Shopping",
+      "subcategories": ["Clothing", "Electronics", "Home Goods", "Gifts", "Online Shopping"]
+    },
+    {
+      "name": "Utilities",
+      "subcategories": ["Electricity", "Water", "Gas", "Internet", "Phone", "Trash"]
+    },
+    {
+      "name": "Transportation",
+      "subcategories": ["Fuel", "Public Transit", "Parking", "Vehicle Maintenance", "Tolls", "Ride Share"]
+    },
+    {
+      "name": "Housing",
+      "subcategories": ["Rent", "Mortgage", "Property Tax", "Home Insurance", "Repairs", "Furniture"]
+    },
+    {
+      "name": "Personal Care",
+      "subcategories": ["Haircare", "Skincare", "Gym Membership", "Spa", "Cosmetics"]
+    }
+  ]
+}

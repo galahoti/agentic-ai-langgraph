@@ -1,0 +1,40 @@
+{
+	"servers": {
+		"filesystem": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-filesystem@2025.8.21",
+				"${input:allowed_dirs}"
+			],
+			"type": "stdio"
+		},
+		"demo-server": {
+			"type": "stdio",
+			"command": "C:\\Users\\galahoti\\.local\\bin\\uv.exe",
+			"args": [
+				"run",
+				"fastmcp",
+				"run",
+				"C:\\Users\\galahoti\\Desktop\\Agents\\Langgraph\\research_agent\\mcp-servers\\demo_server.py"
+			]
+		},
+		"expense_mgmt": {
+			"type": "stdio",
+			"command": "C:\\Users\\galahoti\\.local\\bin\\uv.exe",
+			"args": [
+				"run",
+				"fastmcp",
+				"run",
+				"C:\\Users\\galahoti\\Desktop\\Agents\\Langgraph\\research_agent\\mcp-servers\\expense_tracker.py"
+			]
+		}
+	},
+	"inputs": [
+		{
+			"id": "allowed_dirs",
+			"type": "promptString",
+			"description": "Allowed directories for MCP Filesystem server"
+		}
+	]
+}

@@ -1,0 +1,11 @@
+{
+    "graphs": {
+      "research_agent": "./research_agent/utils/agent.py:graph",
+      "simple_chatbot": "./research_agent/utils/simple_chatbot.py:chatbot",
+      "linkedin_post_agent":"./linkedin_agent/utils/agent.py:linkedin_agent",
+      "command_agent":"./command_agent/utils/agent.py:graph",
+      "supervisor_agent":"./supervisor_agent/utils/agent.py:supervisor"
+    },
+    "env": "./.env",
+    "dependencies": ["."]
+  }
