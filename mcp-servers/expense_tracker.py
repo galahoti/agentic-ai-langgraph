@@ -79,4 +79,4 @@ def get_categories() -> str:
 init_db()  # Initialize the database
 
 if __name__ == "__main__":
-    mcp.run()
+    mcp.run(transport="http", host="0.0.0.0", port=8001)
