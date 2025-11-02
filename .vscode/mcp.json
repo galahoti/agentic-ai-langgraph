@@ -1,4 +1,11 @@
 {
+	"inputs": [
+		{
+			"id": "allowed_dirs",
+			"type": "promptString",
+			"description": "Allowed directories for MCP Filesystem server"
+		}
+	],
 	"servers": {
 		"filesystem": {
 			"command": "npx",
@@ -28,17 +35,6 @@
 				"run",
 				"C:\\Users\\galahoti\\Desktop\\Agents\\Langgraph\\research_agent\\mcp-servers\\expense_tracker.py"
 			]
-		},
-		"sample-remote-server": {
-			"url": "https://grubby-indigo-unicorn.fastmcp.app/mcp",
-			"type": "http"
 		}
-	},
-	"inputs": [
-		{
-			"id": "allowed_dirs",
-			"type": "promptString",
-			"description": "Allowed directories for MCP Filesystem server"
-		}
-	]
+	}
 }

@@ -3,11 +3,25 @@ import os
 import json
 from fastmcp import FastMCP
 from contextlib import contextmanager
+import tempfile
 
 mcp = FastMCP(name="Expense Tracker")
 
-# Store the database at the repository root (one level above this file's directory)
-DB_FILE = os.path.join(os.path.dirname(__file__), 'expense.db')
+# Use environment variable for data directory, fallback to temp directory for container environments
+DATA_DIR = os.environ.get('MCP_DATA_DIR')
+if not DATA_DIR:
+    # Check if we're in a container environment (typical readonly filesystem)
+    script_dir = os.path.dirname(__file__)
+    if os.path.exists(script_dir) and os.access(script_dir, os.W_OK):
+        DATA_DIR = script_dir
+    else:
+        # Use /tmp for container environments or fallback to system temp
+        DATA_DIR = '/tmp' if os.path.exists('/tmp') else tempfile.gettempdir()
+
+# Ensure the data directory exists and is writable
+os.makedirs(DATA_DIR, exist_ok=True)
+
+DB_FILE = os.path.join(DATA_DIR, 'expense.db')
 CATEGORIES_FILE = os.path.join(os.path.dirname(__file__), 'categories.json')
 
 print(f"[ExpenseTracker] Using expense database at: {os.path.abspath(DB_FILE)}")
@@ -16,16 +30,24 @@ print(f"[ExpenseTracker] Categories file at: {os.path.abspath(CATEGORIES_FILE)}"
 @contextmanager
 def get_db_connection():
     """Context manager for a database connection."""
-    conn = sqlite3.connect(DB_FILE)
-    conn.execute("PRAGMA journal_mode=WAL")  # Enable Write-Ahead Logging for better concurrency
     try:
-        yield conn
-        conn.commit()  # Commit changes before closing
-    except Exception:
-        conn.rollback()  # Rollback on error
+        conn = sqlite3.connect(DB_FILE, timeout=10.0)
+        # Use DELETE mode instead of WAL for better compatibility in container environments
+        conn.execute("PRAGMA journal_mode=DELETE")
+        conn.execute("PRAGMA synchronous=NORMAL")
+        try:
+            yield conn
+            conn.commit()  # Commit changes before closing
+        except Exception:
+            conn.rollback()  # Rollback on error
+            raise
+        finally:
+            conn.close()
+    except sqlite3.OperationalError as e:
+        print(f"[ExpenseTracker] Database error: {e}")
+        print(f"[ExpenseTracker] DB path: {DB_FILE}")
+        print(f"[ExpenseTracker] Directory writable: {os.access(os.path.dirname(DB_FILE), os.W_OK)}")
         raise
-    finally:
-        conn.close()
 
 def init_db():
     """Initializes the database and creates the expenses table if it doesn't exist."""
